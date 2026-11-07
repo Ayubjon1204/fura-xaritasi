@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O'zbekiston fura xaritasi 2023–2026</title>
+<meta name="description" content="Sun'iy yo'ldosh suratlari asosida O'zbekistondagi fura to'planadigan joylar, yuklash joylari va yo'ldagi furalar tahlili (2023–2026).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;600;700&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{--bg:#F8FAFC;--fg:#0F172A;--fg2:#1E3A8A;--muted:#475569;--card:#FFFFFF;--line:#DBEAFE;--soft:#E9EEF6;--primary:#1E40AF;--primary2:#3B82F6;--accent:#D97706;
+--up:#15803D;--down:#B91C1C;--flat:#A16207;--road:#2563EB;--park:#EA580C;--zavod:#DC2626;--sklad:#D97706;--hero1:#0B1B4D;--hero2:#1E40AF;--ring:#1E40AF;
+--r:14px;--shadow:0 1px 2px rgba(15,23,42,.06),0 6px 24px rgba(15,23,42,.06)}
+@media (prefers-color-scheme:dark){:root{--bg:#0B1220;--fg:#E5ECF8;--fg2:#BFD3FF;--muted:#A3B3CC;--card:#111A2E;--line:#22314F;--soft:#16223A;--primary:#7AA2FF;--primary2:#93B4FF;
+--accent:#F59E0B;--up:#4ADE80;--down:#F87171;--flat:#FACC15;--hero1:#060D22;--hero2:#132B6B;--ring:#93B4FF;--shadow:0 1px 2px rgba(0,0,0,.3),0 6px 24px rgba(0,0,0,.25)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 "Fira Sans",system-ui,sans-serif}
+a{color:var(--primary)}:focus-visible{outline:3px solid var(--ring);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+header.top{position:sticky;top:0;z-index:1000;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--fg);text-decoration:none}
+.brand svg{flex:none}
+nav ul{display:flex;gap:4px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border-radius:10px;color:var(--fg);text-decoration:none;font-weight:500}
+nav a:hover{background:var(--soft)}
+@media (max-width:720px){nav{display:none}}
+.hero{background:linear-gradient(135deg,var(--hero1),var(--hero2));color:#F1F5FF;padding:56px 0 40px}
+.eyebrow{font:600 13px/1 "Fira Code",monospace;letter-spacing:.08em;text-transform:uppercase;color:#FCD34D}
+h1{font:700 clamp(30px,5vw,52px)/1.1 "Fira Sans",sans-serif;margin:12px 0 12px;text-wrap:balance}
+.lead{max-width:760px;font-size:18px;color:#DCE6FF;margin:0 0 28px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.kpi{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:var(--r);padding:16px}
+.kpi b{display:block;font:700 clamp(26px,3.4vw,36px)/1.1 "Fira Code",monospace;color:#fff}
+.kpi span{display:block;margin-top:6px;color:#DCE6FF;font-size:14px}
+.meta{margin-top:18px;color:#B9C8EC;font-size:14px}
+section{padding:44px 0}
+h2{font:700 clamp(22px,3vw,30px)/1.2 "Fira Sans",sans-serif;margin:0 0 6px;color:var(--fg)}
+.sub{color:var(--muted);margin:0 0 20px;max-width:820px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+#map{height:min(72vh,680px);border-radius:var(--r);border:1px solid var(--line)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--fg);font:500 15px "Fira Sans",sans-serif;cursor:pointer;transition:background .15s,border-color .15s}
+.chip[aria-pressed="true"]{border-color:var(--primary);background:color-mix(in srgb,var(--primary) 12%,var(--card))}
+.chip .dot{width:12px;height:12px;border-radius:50%;flex:none}.chip .sq{width:11px;height:11px;border-radius:2px;flex:none}
+.chip small{font-family:"Fira Code",monospace;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+td.num,th.num{text-align:right;font-family:"Fira Code",monospace}
+tbody tr:hover{background:var(--soft)}
+.pad{padding:16px}
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar{display:grid;grid-template-columns:minmax(110px,190px) 1fr 64px;gap:10px;align-items:center;font-size:15px}
+.bar .track{height:14px;background:var(--soft);border-radius:999px;overflow:hidden}
+.bar .fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary2));border-radius:999px}
+.bar .v{font-family:"Fira Code",monospace;text-align:right}
+.lots{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+.lot{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.lot h3{margin:0;font-size:16px;line-height:1.3}
+.lot .row{display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--muted);font-size:14px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;font:600 13px "Fira Code",monospace;border:1px solid currentColor}
+.t-up{color:var(--up)}.t-down{color:var(--down)}.t-flat{color:var(--flat)}.t-n{color:var(--muted)}
+.mini{display:flex;align-items:flex-end;gap:6px;height:54px}
+.mini div{flex:1;background:var(--primary2);border-radius:4px 4px 0 0;min-height:2px;position:relative}
+.mini div span{position:absolute;top:-18px;left:0;right:0;text-align:center;font:600 11px "Fira Code",monospace;color:var(--fg)}
+.mini-l{display:flex;gap:6px}.mini-l span{flex:1;text-align:center;font:11px "Fira Code",monospace;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--fg);font:500 15px "Fira Sans",sans-serif;cursor:pointer}
+.btn:hover{background:var(--soft)}
+ul.limits{margin:0;padding-left:20px}ul.limits li{margin:6px 0}
+.stat-line{display:flex;flex-wrap:wrap;gap:12px}.stat-line .card{padding:14px 16px;flex:1 1 200px}
+.stat-line b{display:block;font:700 26px/1.1 "Fira Code",monospace;color:var(--fg2)}.stat-line span{color:var(--muted);font-size:14px}
+footer{padding:28px 0 40px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+.leaflet-popup-content{font:14px/1.45 "Fira Sans",sans-serif;margin:12px 14px}
+.pop h4{margin:0 0 6px;font-size:15px}.pop table{font-size:13px}.pop td,.pop th{padding:4px 6px}
+.legend-note{font-size:13px;color:var(--muted);margin-top:8px}
+.thumbs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}.shot{flex:none;display:flex;flex-direction:column;gap:4px}
+.thumb{position:relative;overflow:hidden;border-radius:10px;background:#1F2937;border:1px solid var(--line)}.thumb img{position:absolute;width:256px;height:256px;max-width:none}
+.shot figcaption{display:flex;justify-content:space-between;font:12px "Fira Code",monospace;color:var(--muted)}.shot figcaption b{color:var(--fg)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="#">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="6" width="14" height="10" rx="1"/><path d="M15 9h4l3 3v4h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+    Fura xaritasi
+  </a>
+  <nav aria-label="Bo'limlar"><ul>
+    <li><a href="#xarita">Xarita</a></li><li><a href="#raqamlar">Raqamlar</a></li><li><a href="#joylar">Eng katta joylar</a></li><li><a href="#yuklash">Yuklash joylari</a></li><li><a href="#usul">Usul</a></li>
+  </ul></nav>
+</div></header>
+
+<main>
+<div class="hero"><div class="wrap">
+  <div class="eyebrow">Sun'iy yo'ldosh tahlili · 2023–2026</div>
+  <h1>O'zbekistonda furalar qayerda to'planadi</h1>
+  <p class="lead">Butun mamlakat bo'yicha fura stoyankalari, bojxona terminallari, TK bazalari, zavod va skladlar oldidagi furalar, yo'lda ketayotgan va to'xtab turgan furalar — bitta xaritada, yillar kesimidagi o'zgarish bilan.</p>
+  <div class="kpis" id="kpis" aria-live="polite"></div>
+  <p class="meta" id="meta"></p>
+</div></div>
+
+<section id="xarita"><div class="wrap">
+  <h2>Xarita</h2>
+  <p class="sub">Sun'iy yo'ldosh xaritasi. Qatlamlarni yoqib-o'chiring. Fura joyi belgisini bossangiz — har bir surat sanasidagi sun'iy yo'ldosh rasmi, fura soni va o'zgarish chiqadi.</p>
+  <div class="toolbar" role="group" aria-label="Xarita qatlamlari" id="toolbar"></div>
+  <div id="map" role="region" aria-label="O'zbekiston fura xaritasi"></div>
+  <p class="legend-note">Belgi kattaligi — odatdagi fura soni. Rang — joy turi. Yo'ldagi va to'xtab turgan furalar — har bir nuqta bitta fura (eng so'nggi surat bo'yicha).</p>
+</div></section>
+
+<section id="raqamlar" style="background:var(--soft)"><div class="wrap">
+  <h2>Raqamlar</h2>
+  <p class="sub">Kamida bitta suratda 5 tadan ko'p fura turgan joylar. «Odatda» — barcha surat sanalari bo'yicha mediana.</p>
+  <div class="grid2">
+    <div class="card"><table aria-label="Toifalar bo'yicha"><thead><tr><th>Toifa</th><th class="num">Joylar</th><th class="num">Odatda</th><th class="num">Jami</th></tr></thead><tbody id="cats"></tbody></table></div>
+    <div class="card pad"><h3 style="margin:0 0 12px;font-size:16px">Viloyatlar bo'yicha (odatdagi furalar)</h3><div class="bars" id="regions"></div></div>
+  </div>
+</div></section>
+
+<section id="joylar"><div class="wrap">
+  <h2>Eng katta joylar</h2>
+  <p class="sub">Har bir joy — o'sha joyning haqiqiy sun'iy yo'ldosh suratlari, har bir surat sanasi va o'sha suratda sanalgan fura soni bilan. Suratlar Esri Wayback arxividan to'g'ridan-to'g'ri yuklanadi.</p>
+  <div class="lots" id="lots"></div>
+  <p style="margin-top:16px"><button class="btn" id="more" type="button">Hammasini ko'rsatish</button></p>
+</div></section>
+
+<section id="yuklash" style="background:var(--soft)"><div class="wrap">
+  <h2>Yuklash joylari: zavod va skladlar</h2>
+  <p class="sub" id="ysub"></p>
+  <div class="stat-line" id="ystats"></div>
+</div></section>
+
+<section id="usul"><div class="wrap">
+  <h2>Usul va cheklovlar</h2>
+  <div class="grid2">
+    <div class="card pad"><h3 style="margin-top:0">Qanday qilindi</h3><ul class="limits">
+      <li>Sun'iy yo'ldosh suratlari: Esri World Imagery va Wayback arxivi (Maxar / Vantor, 0.3–0.5 m). Har bir joy uchun 2023–2026 yillardagi barcha haqiqiy surat sanalari olindi.</li>
+      <li>Furalarni ultralytics YOLO11-OBB modeli (DOTA havo suratlari, «katta transport» sinfi) avtomatik sanadi; uzunligi 10.5 m dan katta transport — fura deb olindi.</li>
+      <li>Skanerlangan hudud: sanoat zonalari, magistral, asosiy va ikkinchi darajali yo'llar bo'yi, 347 ta shahar va shaharcha atrofi, OSM va xarita qidiruvlaridagi korxonalar atrofi.</li>
+      <li>Joy turi yaqin atrofdagi OSM va xarita ma'lumotlari asosida aniqlandi.</li>
+    </ul></div>
+    <div class="card pad"><h3 style="margin-top:0">Bilish kerak</h3><ul class="limits">
+      <li>Bu jonli kuzatuv emas: har bir hudud — eng so'nggi suratdagi bir lahzalik holat (2023–2025).</li>
+      <li>Avtomatik sanash xatosi taxminan ±20%. Kichik yuk mashinalari (Isuzu, Gazel) va samosvallar sanalmagan.</li>
+      <li>Skanerlanmagan hududlardagi joylar kirmagan — raqamlar pastki chegara.</li>
+      <li>Joy turi va hudud nomi taxminiy; yakuniy qaror uchun joyida tekshiring.</li>
+    </ul></div>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  Manbalar: Esri, Maxar, Vantor (sun'iy yo'ldosh suratlari) · © OpenStreetMap hissadorlari (ODbL) · Ultralytics YOLO11. Xarita qidiruvlaridan olingan biznes nuqtalari ushbu ommaviy sahifaga qo'yilmagan. <span id="gen"></span>
+</div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const fmt = n => Number(n).toLocaleString('uz-UZ').replace(/,/g, ' ');
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const WB = (r, z, y, x) => `https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/${r}/${z}/${y}/${x}`;
+function satThumb(lat, lon, rel, size = 150, z = 17) {
+  const n = 256 * 2 ** z, x = (lon + 180) / 360 * n, y = (1 - Math.asinh(Math.tan(lat * Math.PI / 180)) / Math.PI) / 2 * n;
+  const x0 = x - size / 2, y0 = y - size / 2; let h = `<div class="thumb" style="width:${size}px;height:${size}px">`;
+  for (let ty = Math.floor(y0 / 256); ty <= Math.floor((y0 + size) / 256); ty++)
+    for (let tx = Math.floor(x0 / 256); tx <= Math.floor((x0 + size) / 256); tx++)
+      h += `<img loading="lazy" alt="" src="${WB(rel, z, ty, tx)}" style="left:${(tx * 256 - x0).toFixed(0)}px;top:${(ty * 256 - y0).toFixed(0)}px">`;
+  return h + '</div>';
+}
+const shots = (l, size) => `<div class="thumbs">${l.counts.map(c => `<figure class="shot" style="margin:0">${satThumb(l.lat, l.lon, c[2], size)}<figcaption><span>${c[0]}</span><b>${c[1]} fura</b></figcaption></figure>`).join('')}</div>`;
+const CAT_COLOR = {bojxona:'#7C3AED', zavod:'#DC2626', sklad:'#D97706', tk:'#15803D', ustaxona:'#0369A1', stoyanka:'#0891B2', sanoat:'#475569', yol:'#94A3B8', boshqa:'#64748B'};
+const TREND = {up:['↑ o\'smoqda','t-up'], down:['↓ kamaymoqda','t-down'], flat:['→ barqaror','t-flat'], n:['• 1 ta surat','t-n']};
+
+fetch('data.json').then(r => r.json()).then(D => {
+  const S = D.stats;
+  document.getElementById('kpis').innerHTML = [
+    [S.lots, 'fura to\'planadigan joy (5+ fura)'],
+    [S.sites, 'zavod va sklad (yuklash joyi)'],
+    [S.road, 'fura yo\'lda'],
+    [S.park, 'fura to\'xtab turgan'],
+    [S.lots_loading_typical, 'fura — yuklash joyi oldida odatda'],
+    [S.pois, 'ustaxona va TK bazasi'],
+  ].map(([v, l]) => `<div class="kpi"><b>${fmt(v)}</b><span>${l}</span></div>`).join('');
+  document.getElementById('meta').textContent = `${fmt(S.tiles)} ta xarita plitkasi tekshirildi · yangilangan: ${D.generated}`;
+  document.getElementById('gen').textContent = `Yangilangan: ${D.generated}.`;
+
+  document.getElementById('cats').innerHTML = D.categories.map(c =>
+    `<tr><td><span class="sq" style="display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:8px;background:${CAT_COLOR[c.key]}"></span>${esc(c.label)}</td><td class="num">${c.n}</td><td class="num">~${c.typical}</td><td class="num">~${fmt(c.total)}</td></tr>`).join('');
+  const maxR = Math.max(1, ...D.regions.map(r => r.total));
+  document.getElementById('regions').innerHTML = D.regions.map(r =>
+    `<div class="bar"><span>${esc(r.name)} <small style="color:var(--muted)">(${r.n})</small></span><div class="track" role="img" aria-label="${esc(r.name)}: ${r.total} fura"><div class="fill" style="width:${(r.total / maxR * 100).toFixed(1)}%"></div></div><span class="v">${fmt(r.total)}</span></div>`).join('');
+
+  const lotCard = l => {
+    const [tl, tc] = TREND[l.trend] || TREND.n;
+    return `<article class="card lot"><h3>${esc(l.name)}</h3>
+      <div class="row"><span>${esc([l.place, l.vil].filter(Boolean).join(', '))}</span><span class="badge ${tc}">${tl}</span></div>
+      ${shots(l, 128)}
+      <span class="sr">${l.counts.map(c => `${c[0]}: ${c[1]} fura`).join('; ')}</span>
+      <button class="btn" type="button" data-ll="${l.lat},${l.lon}">Xaritada ko'rish</button></article>`;
+  };
+  const lotsEl = document.getElementById('lots'); let showAll = false;
+  const renderLots = () => { lotsEl.innerHTML = D.lots.slice(0, showAll ? D.lots.length : 12).map(lotCard).join(''); document.getElementById('more').hidden = showAll || D.lots.length <= 12; };
+  renderLots(); document.getElementById('more').onclick = () => { showAll = true; renderLots(); };
+
+  const st = S;
+  document.getElementById('ysub').textContent = `OpenStreetMap va xarita qidiruvlari bo'yicha ${fmt(st.sites)} ta zavod va sklad topildi (zavod: ${fmt(st.sites_zavod)}, sklad/logistika: ${fmt(st.sites_sklad)}). Xaritada faqat OSM manbali joylar ko'rsatilgan.`;
+  document.getElementById('ystats').innerHTML = [
+    [st.sites_scanned, 'tasi skanerlangan hududda'], [st.sites_with_trucks, 'tasining oldida suratda fura bor'],
+    [st.sites_5plus, 'tasida 5 va undan ko\'p fura'], ['~' + st.sites_typical, 'fura — fura bor joylarda odatda (mediana)'], [st.sites_max, 'fura — eng ko\'pi'],
+  ].map(([v, l]) => `<div class="card"><b>${typeof v === 'number' ? fmt(v) : v}</b><span>${l}</span></div>`).join('');
+
+  // ---- map ----
+  const map = L.map('map', {preferCanvas: true, scrollWheelZoom: false}).setView([41.0, 64.5], 6);
+  const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, attribution: '© OpenStreetMap hissadorlari'});
+  const sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {maxZoom: 19, attribution: 'Suratlar © Esri, Maxar, Vantor'});
+  const labels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {maxZoom: 19, attribution: '© Esri'});
+  sat.addTo(map); labels.addTo(map);
+  L.control.layers({"Sun'iy yo'ldosh": sat, 'Xarita': osm}, {'Joy nomlari': labels}, {position: 'topright'}).addTo(map);
+  map.on('focus', () => map.scrollWheelZoom.enable()); map.on('blur', () => map.scrollWheelZoom.disable());
+  const pop = l => `<div class="pop"><h4>${esc(l.name)}</h4><div>${esc(l.label)} · ${esc([l.place, l.vil].filter(Boolean).join(', '))}</div>
+    <table><thead><tr><th>Surat sanasi</th><th class="num">Fura</th><th class="num">O'zgarish</th></tr></thead><tbody>${l.counts.map((c, i) => {
+      const p = i ? l.counts[i - 1][1] : null; const d = p === null ? '' : (c[1] - p > 0 ? '+' : '') + (c[1] - p) + (p ? ` (${Math.round((c[1] - p) / p * 100)}%)` : '');
+      return `<tr><td>${c[0]}</td><td class="num">${c[1]}</td><td class="num">${d}</td></tr>`; }).join('')}</tbody></table>
+    <div style="margin:6px 0">Odatda: ~${l.typical} fura · ${(TREND[l.trend] || TREND.n)[0]}</div>${shots(l, 120)}</div>`;
+  const layers = {
+    lots: L.layerGroup(D.lots.map(l => L.circleMarker([l.lat, l.lon], {radius: 6 + Math.sqrt(l.typical) * 1.6, color: '#fff', weight: 2, fillColor: CAT_COLOR[l.cat], fillOpacity: .9}).bindPopup(pop(l)))),
+    road: L.layerGroup(D.road.map(p => L.circleMarker(p, {radius: 3, stroke: false, fillColor: '#2563EB', fillOpacity: .85}))),
+    park: L.layerGroup(D.park.map(p => L.circleMarker(p, {radius: 3, stroke: false, fillColor: '#EA580C', fillOpacity: .8}))),
+    sites: L.layerGroup(D.sites.map(s => L.circleMarker([s[0], s[1]], {radius: 4, weight: 1, color: '#fff', fillColor: s[2] === 1 ? '#DC2626' : '#D97706', fillOpacity: .75})
+      .bindPopup(`<div class="pop"><h4>${s[2] === 1 ? 'Zavod (ishlab chiqarish)' : 'Sklad / logistika'} · ${esc(s[4])}</h4>${s[3] < 0 ? "Bu joy hali skanerlanmagan" : `Suratda oldida: ~${s[3]} fura`}</div>`))),
+  };
+  const defs = [['lots', 'Fura joylari', D.lots.length, '#1E40AF', true, 'dot'], ['road', "Yo'ldagi furalar", D.road.length, '#2563EB', true, 'dot'],
+                ['park', "To'xtab turgan furalar", D.park.length, '#EA580C', true, 'dot'], ['sites', 'Zavod va skladlar (OSM)', D.sites.length, '#DC2626', false, 'sq']];
+  const tb = document.getElementById('toolbar');
+  defs.forEach(([k, label, n, c, on, shape]) => {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.setAttribute('aria-pressed', on);
+    b.innerHTML = `<span class="${shape}" style="background:${c}"></span>${label} <small>${fmt(n)}</small>`;
+    b.onclick = () => { const v = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', v); v ? layers[k].addTo(map) : map.removeLayer(layers[k]); };
+    if (on) layers[k].addTo(map); tb.appendChild(b);
+  });
+  layers.lots.eachLayer(m => m.bringToFront && m.bringToFront());
+  lotsEl.addEventListener('click', e => { const b = e.target.closest('[data-ll]'); if (!b) return; const [a, o] = b.dataset.ll.split(',').map(Number);
+    document.getElementById('xarita').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); map.setView([a, o], 15);
+    layers.lots.eachLayer(m => { const ll = m.getLatLng(); if (Math.abs(ll.lat - a) < 1e-5 && Math.abs(ll.lng - o) < 1e-5) m.openPopup(); }); });
+}).catch(() => { document.getElementById('kpis').textContent = "Ma'lumotni yuklab bo'lmadi."; });
+</script>
+</body>
+</html>
