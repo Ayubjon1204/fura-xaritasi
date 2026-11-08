@@ -116,7 +116,7 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:14px;border-top:1px soli
 
 <section id="raqamlar" style="background:var(--soft)"><div class="wrap">
   <h2>Raqamlar</h2>
-  <p class="sub">Kamida bitta suratda 5 tadan ko'p fura turgan joylar. «Odatda» — barcha surat sanalari bo'yicha mediana.</p>
+  <p class="sub">Kamida bitta suratda 5 va undan ko'p fura turgan joylar. «Odatda» — barcha surat sanalari bo'yicha mediana.</p>
   <div class="grid2">
     <div class="card"><table aria-label="Toifalar bo'yicha"><thead><tr><th>Toifa</th><th class="num">Joylar</th><th class="num">Odatda</th><th class="num">Jami</th></tr></thead><tbody id="cats"></tbody></table></div>
     <div class="card pad"><h3 style="margin:0 0 12px;font-size:16px">Viloyatlar bo'yicha (odatdagi furalar)</h3><div class="bars" id="regions"></div></div>
@@ -165,7 +165,7 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:14px;border-top:1px soli
     </ul></div>
     <div class="card pad"><h3 style="margin-top:0">Bilish kerak</h3><ul class="limits">
       <li>Bu jonli kuzatuv emas: har bir hudud — eng so'nggi suratdagi bir lahzalik holat. Tom ostidagi va soyadagi furalar ko'rinmaydi.</li>
-      <li>Avtomatik sanash xatosi taxminan ±20%. Kichik yuk mashinalari (Isuzu, Gazel) va samosvallar sanalmagan.</li>
+      <li>Avtomatik sanash ayrim furalarni o'tkazib yuboradi, haqiqiy son bundan ko'p bo'lishi mumkin. Kichik yuk mashinalari (Isuzu, Gazel) va samosvallar sanalmagan.</li>
       <li id="noimg"></li>
       <li>Joy turi va hudud nomi taxminiy; yakuniy qaror uchun joyida tekshiring.</li>
     </ul></div>
@@ -250,7 +250,8 @@ fetch('data.json').then(r => r.json()).then(D => {
   document.getElementById('iregs').innerHTML = D.infra.regions.map(r => `<div class="bar"><span>${esc(r.name)}</span><div class="track" role="img" aria-label="${esc(r.name)}: ${r.n} joy"><div class="fill" style="width:${(r.n / maxI * 100).toFixed(1)}%"></div></div><span class="v">${fmt(r.n)}</span></div>`).join('');
 
   // ---- map ----
-  const map = L.map('map', {preferCanvas: true, scrollWheelZoom: true, maxZoom: 21}).setView([41.0, 64.5], 6);
+  const map = L.map('map', {preferCanvas: true, scrollWheelZoom: true, maxZoom: 21, zoomControl: false}).setView([41.0, 64.5], 6);
+  L.control.zoom({zoomInTitle: 'Yaqinlashtirish', zoomOutTitle: 'Uzoqlashtirish'}).addTo(map);
   const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 21, maxNativeZoom: 19, attribution: '© OpenStreetMap hissadorlari'});
   const sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {maxZoom: 21, maxNativeZoom: 19, attribution: 'Suratlar © Esri, Maxar, Vantor'});
   const labels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {maxZoom: 21, maxNativeZoom: 19, attribution: '© Esri'});

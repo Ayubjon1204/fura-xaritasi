@@ -8,4 +8,4 @@ Sun'iy yo'ldosh suratlari asosida O'zbekistondagi fura to'planadigan joylar, zav
 - Furalarni sanash: ultralytics YOLO11-OBB (DOTA, "large vehicle"), uzunligi 10.5 m dan katta transport.
 - Joylar va yo'llar: © OpenStreetMap hissadorlari (ODbL).
 
-Bu jonli kuzatuv emas: har bir hudud — eng so'nggi suratdagi bir lahzalik holat. Avtomatik sanash xatosi ±20%.
+Bu jonli kuzatuv emas: har bir hudud — eng so'nggi suratdagi bir lahzalik holat. Avtomatik sanash ayrim furalarni o'tkazib yuboradi, haqiqiy son bundan ko'p bo'lishi mumkin.
