@@ -183,7 +183,7 @@ fetch('data.json').then(r => r.json()).then(D => {
   const S = D.stats;
   document.getElementById('kpis').innerHTML = [
     [S.lots, 'fura to\'planadigan joy (5+ fura)'],
-    [S.sites, 'zavod va sklad (yuklash joyi)'],
+    [S.sites_with_trucks, 'fura kirib-chiqadigan zavod va sklad'],
     [S.road, 'fura yo\'lda'],
     [S.park, 'fura to\'xtab turgan'],
     [S.lots_loading_typical, 'fura — yuklash joyi oldida odatda'],
@@ -211,7 +211,7 @@ fetch('data.json').then(r => r.json()).then(D => {
   renderLots(); document.getElementById('more').onclick = () => { showAll = true; renderLots(); };
 
   const st = S;
-  document.getElementById('ysub').textContent = `OpenStreetMap va xarita qidiruvlari bo'yicha ${fmt(st.sites)} ta zavod va sklad topildi (zavod: ${fmt(st.sites_zavod)}, sklad/logistika: ${fmt(st.sites_sklad)}). Xaritada faqat OSM manbali joylar ko'rsatilgan.`;
+  document.getElementById('ysub').textContent = `OpenStreetMap va xarita qidiruvlari bo'yicha ${fmt(st.sites)} ta zavod va sklad topildi (zavod: ${fmt(st.sites_zavod)}, sklad/logistika: ${fmt(st.sites_sklad)}). Xaritada faqat oldida fura ko'ringan OSM manbali joylar ko'rsatilgan.`;
   document.getElementById('ystats').innerHTML = [
     [st.sites_scanned, 'tasi skanerlangan hududda'], [st.sites_with_trucks, 'tasining oldida suratda fura bor'],
     [st.sites_5plus, 'tasida 5 va undan ko\'p fura'], ['~' + st.sites_typical, 'fura — fura bor joylarda odatda (mediana)'], [st.sites_max, 'fura — eng ko\'pi'],
