@@ -101,7 +101,7 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:14px;border-top:1px soli
 <div class="hero"><div class="wrap">
   <div class="eyebrow">Sun'iy yo'ldosh tahlili · 2023–2026</div>
   <h1>O'zbekistonda furalar qayerda to'planadi</h1>
-  <p class="lead">Butun mamlakat bo'yicha fura stoyankalari, bojxona terminallari, TK bazalari, zavod va skladlar oldidagi furalar, yo'lda ketayotgan va to'xtab turgan furalar — bitta xaritada, yillar kesimidagi o'zgarish bilan.</p>
+  <p class="lead">Yaqin sun'iy yo'ldosh surati bor hududlar bo'yicha fura stoyankalari, bojxona terminallari, TK bazalari, zavod va skladlar oldidagi furalar, yo'lda ketayotgan va to'xtab turgan furalar — bitta xaritada, yillar kesimidagi o'zgarish bilan.</p>
   <div class="kpis" id="kpis" aria-live="polite"></div>
   <p class="meta" id="meta"></p>
 </div></div>
@@ -136,19 +136,37 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:14px;border-top:1px soli
   <div class="stat-line" id="ystats"></div>
 </div></section>
 
+<section id="barcha"><div class="wrap">
+  <h2>Barcha furalar: viloyatlar bo'yicha</h2>
+  <p class="sub" id="bsub"></p>
+  <div class="grid2">
+    <div class="card"><table aria-label="Viloyatlar bo'yicha furalar"><thead><tr><th>Viloyat</th><th class="num">Yo'lda</th><th class="num">To'xtab turgan</th><th class="num">Jami</th></tr></thead><tbody id="tregs"></tbody></table></div>
+    <div class="card"><table aria-label="Joy turi bo'yicha furalar"><thead><tr><th>Joy turi</th><th class="num">Yo'lda</th><th class="num">To'xtab turgan</th><th class="num">Jami</th></tr></thead><tbody id="tzones"></tbody></table></div>
+  </div>
+</div></section>
+
+<section id="infra" style="background:var(--soft)"><div class="wrap">
+  <h2>Furaga tegishli barcha joylar</h2>
+  <p class="sub" id="isub"></p>
+  <div class="grid2">
+    <div class="card"><table aria-label="Toifalar bo'yicha joylar"><thead><tr><th>Toifa</th><th class="num">Soni</th></tr></thead><tbody id="icats"></tbody></table></div>
+    <div class="card pad"><h3 style="margin:0 0 12px;font-size:16px">Viloyatlar bo'yicha</h3><div class="bars" id="iregs"></div></div>
+  </div>
+</div></section>
+
 <section id="usul"><div class="wrap">
   <h2>Usul va cheklovlar</h2>
   <div class="grid2">
     <div class="card pad"><h3 style="margin-top:0">Qanday qilindi</h3><ul class="limits">
       <li>Sun'iy yo'ldosh suratlari: Esri World Imagery va Wayback arxivi (Maxar / Vantor, 0.3–0.5 m). Har bir joy uchun 2023–2026 yillardagi barcha haqiqiy surat sanalari olindi.</li>
       <li>Furalarni ultralytics YOLO11-OBB modeli (DOTA havo suratlari, «katta transport» sinfi) avtomatik sanadi; uzunligi 10.5 m dan katta transport — fura deb olindi.</li>
-      <li>Skanerlangan hudud (~26 500 km²): sanoat zonalari, magistral, asosiy, ikkinchi va uchinchi darajali yo'llar bo'yi (~24 ming km uchinchi darajali yo'l ham), 347 ta shahar va shaharcha atrofi, OSM va xarita qidiruvlaridagi korxonalar atrofi.</li>
+      <li id="cov"></li>
       <li>Joy turi yaqin atrofdagi OSM va xarita ma'lumotlari asosida aniqlandi.</li>
     </ul></div>
     <div class="card pad"><h3 style="margin-top:0">Bilish kerak</h3><ul class="limits">
-      <li>Bu jonli kuzatuv emas: har bir hudud — eng so'nggi suratdagi bir lahzalik holat (2023–2025).</li>
+      <li>Bu jonli kuzatuv emas: har bir hudud — eng so'nggi suratdagi bir lahzalik holat. Tom ostidagi va soyadagi furalar ko'rinmaydi.</li>
       <li>Avtomatik sanash xatosi taxminan ±20%. Kichik yuk mashinalari (Isuzu, Gazel) va samosvallar sanalmagan.</li>
-      <li>Skanerlanmagan hududlardagi joylar kirmagan — raqamlar pastki chegara.</li>
+      <li id="noimg"></li>
       <li>Joy turi va hudud nomi taxminiy; yakuniy qaror uchun joyida tekshiring.</li>
     </ul></div>
   </div>
@@ -187,7 +205,7 @@ fetch('data.json').then(r => r.json()).then(D => {
     [S.road, 'fura yo\'lda'],
     [S.park, 'fura to\'xtab turgan'],
     [S.lots_loading_typical, 'fura — yuklash joyi oldida odatda'],
-    [S.pois, 'ustaxona va TK bazasi'],
+    [D.infra.total, 'furaga tegishli joy (ustaxona, shina, yoqilg\'i, bojxona va boshqa)'],
   ].map(([v, l]) => `<div class="kpi"><b>${fmt(v)}</b><span>${l}</span></div>`).join('');
   document.getElementById('meta').textContent = `${fmt(S.tiles)} ta xarita plitkasi tekshirildi · yangilangan: ${D.generated}`;
   document.getElementById('gen').textContent = `Yangilangan: ${D.generated}.`;
@@ -217,6 +235,20 @@ fetch('data.json').then(r => r.json()).then(D => {
     [st.sites_5plus, 'tasida 5 va undan ko\'p fura'], ['~' + st.sites_typical, 'fura — fura bor joylarda odatda (mediana)'], [st.sites_max, 'fura — eng ko\'pi'],
   ].map(([v, l]) => `<div class="card"><b>${typeof v === 'number' ? fmt(v) : v}</b><span>${l}</span></div>`).join('');
 
+  const noimg = D.no_imagery || [];
+  const km = Math.round(S.tiles * 0.213);
+  const totalT = D.truck_regions.reduce((a, r) => a + r.road + r.park, 0);
+  document.getElementById('bsub').textContent = `Haqiqiy yaqin surat bor hududlarda jami ${fmt(totalT)} ta fura sanaldi (har bir hududning eng so'nggi surati bo'yicha).`;
+  const trow = r => `<tr><td>${esc(r.name)}</td><td class="num">${fmt(r.road)}</td><td class="num">${fmt(r.park)}</td><td class="num"><b>${fmt(r.road + r.park)}</b></td></tr>`;
+  document.getElementById('tregs').innerHTML = D.truck_regions.map(trow).join('') + noimg.map(n => `<tr><td>${esc(n)}</td><td class="num" colspan="3" style="color:var(--muted)">yaqin surat yo'q, sanalmadi</td></tr>`).join('');
+  document.getElementById('tzones').innerHTML = D.truck_zones.map(trow).join('');
+  document.getElementById('cov').textContent = `Yaqin surat (z18) bilan haqiqatan ko'rilgan hudud: ~${fmt(km)} km². Esri bunday suratni O'zbekistonning taxminan 13 foizida (~59 240 km²) beradi.`;
+  document.getElementById('noimg').textContent = `${noimg.join(', ')} hududlarida yaqin surat umuman yo'q, shuning uchun u yerdagi furalar sanalmagan. Raqamlar pastki chegara.`;
+  document.getElementById('isub').textContent = `OpenStreetMap va xarita qidiruvlari bo'yicha jami ${fmt(D.infra.total)} ta joy. Xaritada faqat ochiq (OSM) manbali joylar ko'rsatilgan.`;
+  document.getElementById('icats').innerHTML = D.infra.cats.map(c => `<tr><td><img src="${TW(c.icon)}" alt="" width="20" height="20" style="vertical-align:-4px;margin-right:8px">${esc(c.label)}</td><td class="num">${fmt(c.n)}</td></tr>`).join('');
+  const maxI = Math.max(1, ...D.infra.regions.map(r => r.n));
+  document.getElementById('iregs').innerHTML = D.infra.regions.map(r => `<div class="bar"><span>${esc(r.name)}</span><div class="track" role="img" aria-label="${esc(r.name)}: ${r.n} joy"><div class="fill" style="width:${(r.n / maxI * 100).toFixed(1)}%"></div></div><span class="v">${fmt(r.n)}</span></div>`).join('');
+
   // ---- map ----
   const map = L.map('map', {preferCanvas: true, scrollWheelZoom: true, maxZoom: 21}).setView([41.0, 64.5], 6);
   const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 21, maxNativeZoom: 19, attribution: '© OpenStreetMap hissadorlari'});
@@ -244,9 +276,11 @@ fetch('data.json').then(r => r.json()).then(D => {
     park: L.layerGroup(D.park.map(p => L.circleMarker(p, {radius: 3, stroke: false, fillColor: '#EA580C', fillOpacity: .8}))),
     sites: L.layerGroup(D.sites.map(s => L.marker([s[0], s[1]], {icon: ico(s[2] === 1 ? 'zavod' : 'sklad', 18), alt: s[2] === 1 ? 'Zavod' : 'Sklad'})
       .bindPopup(`<div class="pop"><h4>${s[2] === 1 ? 'Zavod (ishlab chiqarish)' : 'Sklad / logistika'} · ${esc(s[4])}</h4>${s[3] < 0 ? "Bu joy hali skanerlanmagan" : `Suratda oldida: ~${s[3]} fura`}</div>`))),
+    infra: L.layerGroup(D.infra.pts.map(p => { const [lab, ic] = D.infra.types[p[2]]; return L.marker([p[0], p[1]], {icon: L.icon({iconUrl: TW(ic), iconSize: [18, 18], iconAnchor: [9, 9], popupAnchor: [0, -9]}), alt: lab}).bindPopup(`<div class="pop"><h4>${esc(p[3])}</h4>${esc(lab)}</div>`); })),
   };
   const defs = [['lots', 'Fura joylari', D.lots.length, '#1E40AF', true, 'dot'], ['road', "Yo'ldagi furalar", D.road.length, '#2563EB', true, 'dot'],
-                ['park', "To'xtab turgan furalar", D.park.length, '#EA580C', true, 'dot'], ['sites', 'Zavod va skladlar (OSM)', D.sites.length, '#DC2626', false, 'sq']];
+                ['park', "To'xtab turgan furalar", D.park.length, '#EA580C', true, 'dot'], ['sites', 'Zavod va skladlar (OSM)', D.sites.length, '#DC2626', false, 'sq'],
+                ['infra', "Ustaxona, yoqilg'i, bojxona (OSM)", D.infra.pts.length, '#0369A1', false, 'sq']];
   const tb = document.getElementById('toolbar');
   defs.forEach(([k, label, n, c, on, shape]) => {
     const b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.setAttribute('aria-pressed', on);
