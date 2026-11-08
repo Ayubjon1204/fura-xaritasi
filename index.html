@@ -108,7 +108,7 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:14px;border-top:1px soli
   <p class="sub">Sun'iy yo'ldosh xaritasi. Qatlamlarni yoqib-o'chiring. Fura joyi belgisini bossangiz — har bir surat sanasidagi sun'iy yo'ldosh rasmi, fura soni va o'zgarish chiqadi.</p>
   <div class="toolbar" role="group" aria-label="Xarita qatlamlari" id="toolbar"></div>
   <div id="map" role="region" aria-label="O'zbekiston fura xaritasi"></div>
-  <p class="legend-note">Belgi kattaligi — odatdagi fura soni. Rang — joy turi. Yo'ldagi va to'xtab turgan furalar — har bir nuqta bitta fura (eng so'nggi surat bo'yicha).</p>
+  <p class="legend-note">Ikonka — joy turi: 🏭 zavod, 📦 sklad, 🛃 bojxona, 🚛 TK bazasi, 🔧 ustaxona, 🅿️ stoyanka, 🏗️ sanoat zonasi, 🛣️ yo'l bo'yi. Kattaligi — odatdagi fura soni. Yo'ldagi va to'xtab turgan furalar — har bir nuqta bitta fura (eng so'nggi surat bo'yicha).</p>
 </div></section>
 
 <section id="raqamlar" style="background:var(--soft)"><div class="wrap">
@@ -153,7 +153,7 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:14px;border-top:1px soli
 </main>
 
 <footer><div class="wrap">
-  Manbalar: Esri, Maxar, Vantor (sun'iy yo'ldosh suratlari) · © OpenStreetMap hissadorlari (ODbL) · Ultralytics YOLO11. Xarita qidiruvlaridan olingan biznes nuqtalari ushbu ommaviy sahifaga qo'yilmagan. <span id="gen"></span>
+  Manbalar: Esri, Maxar, Vantor (sun'iy yo'ldosh suratlari) · © OpenStreetMap hissadorlari (ODbL) · Ultralytics YOLO11 · Ikonkalar: Twemoji (CC-BY 4.0). Xarita qidiruvlaridan olingan biznes nuqtalari ushbu ommaviy sahifaga qo'yilmagan. <span id="gen"></span>
 </div></footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -170,6 +170,9 @@ function satThumb(lat, lon, rel, size = 150, z = 17) {
   return h + '</div>';
 }
 const shots = (l, size) => `<div class="thumbs">${l.counts.map(c => `<figure class="shot" style="margin:0">${satThumb(l.lat, l.lon, c[2], size)}<figcaption><span>${c[0]}</span><b>${c[1]} fura</b></figcaption></figure>`).join('')}</div>`;
+const TW = c => `https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/${c}.png`;
+const ICON = {bojxona:'1f6c3', zavod:'1f3ed', sklad:'1f4e6', tk:'1f69b', ustaxona:'1f527', stoyanka:'1f17f', sanoat:'1f3d7', yol:'1f6e3', boshqa:'1f4cd'};
+const ico = (k, px) => L.icon({iconUrl: TW(ICON[k] || ICON.boshqa), iconSize: [px, px], iconAnchor: [px / 2, px / 2], popupAnchor: [0, -px / 2]});
 const CAT_COLOR = {bojxona:'#7C3AED', zavod:'#DC2626', sklad:'#D97706', tk:'#15803D', ustaxona:'#0369A1', stoyanka:'#0891B2', sanoat:'#475569', yol:'#94A3B8', boshqa:'#64748B'};
 const TREND = {up:['↑ o\'smoqda','t-up'], down:['↓ kamaymoqda','t-down'], flat:['→ barqaror','t-flat'], n:['• 1 ta surat','t-n']};
 
@@ -187,14 +190,14 @@ fetch('data.json').then(r => r.json()).then(D => {
   document.getElementById('gen').textContent = `Yangilangan: ${D.generated}.`;
 
   document.getElementById('cats').innerHTML = D.categories.map(c =>
-    `<tr><td><span class="sq" style="display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:8px;background:${CAT_COLOR[c.key]}"></span>${esc(c.label)}</td><td class="num">${c.n}</td><td class="num">~${c.typical}</td><td class="num">~${fmt(c.total)}</td></tr>`).join('');
+    `<tr><td><img src="${TW(ICON[c.key] || ICON.boshqa)}" alt="" width="20" height="20" style="vertical-align:-4px;margin-right:8px">${esc(c.label)}</td><td class="num">${c.n}</td><td class="num">~${c.typical}</td><td class="num">~${fmt(c.total)}</td></tr>`).join('');
   const maxR = Math.max(1, ...D.regions.map(r => r.total));
   document.getElementById('regions').innerHTML = D.regions.map(r =>
     `<div class="bar"><span>${esc(r.name)} <small style="color:var(--muted)">(${r.n})</small></span><div class="track" role="img" aria-label="${esc(r.name)}: ${r.total} fura"><div class="fill" style="width:${(r.total / maxR * 100).toFixed(1)}%"></div></div><span class="v">${fmt(r.total)}</span></div>`).join('');
 
   const lotCard = l => {
     const [tl, tc] = TREND[l.trend] || TREND.n;
-    return `<article class="card lot"><h3>${esc(l.name)}</h3>
+    return `<article class="card lot"><h3><img src="${TW(ICON[l.cat] || ICON.boshqa)}" alt="" width="22" height="22" style="vertical-align:-5px;margin-right:6px">${esc(l.name)}</h3>
       <div class="row"><span>${esc([l.place, l.vil].filter(Boolean).join(', '))}</span><span class="badge ${tc}">${tl}</span></div>
       ${shots(l, 128)}
       <span class="sr">${l.counts.map(c => `${c[0]}: ${c[1]} fura`).join('; ')}</span>
@@ -225,10 +228,10 @@ fetch('data.json').then(r => r.json()).then(D => {
       return `<tr><td>${c[0]}</td><td class="num">${c[1]}</td><td class="num">${d}</td></tr>`; }).join('')}</tbody></table>
     <div style="margin:6px 0">Odatda: ~${l.typical} fura · ${(TREND[l.trend] || TREND.n)[0]}</div>${shots(l, 120)}</div>`;
   const layers = {
-    lots: L.layerGroup(D.lots.map(l => L.circleMarker([l.lat, l.lon], {radius: 6 + Math.sqrt(l.typical) * 1.6, color: '#fff', weight: 2, fillColor: CAT_COLOR[l.cat], fillOpacity: .9}).bindPopup(pop(l)))),
+    lots: L.layerGroup(D.lots.map(l => L.marker([l.lat, l.lon], {icon: ico(l.cat, Math.min(44, 24 + Math.sqrt(l.typical) * 2)), alt: l.label, zIndexOffset: 1000}).bindPopup(pop(l)))),
     road: L.layerGroup(D.road.map(p => L.circleMarker(p, {radius: 3, stroke: false, fillColor: '#2563EB', fillOpacity: .85}))),
     park: L.layerGroup(D.park.map(p => L.circleMarker(p, {radius: 3, stroke: false, fillColor: '#EA580C', fillOpacity: .8}))),
-    sites: L.layerGroup(D.sites.map(s => L.circleMarker([s[0], s[1]], {radius: 4, weight: 1, color: '#fff', fillColor: s[2] === 1 ? '#DC2626' : '#D97706', fillOpacity: .75})
+    sites: L.layerGroup(D.sites.map(s => L.marker([s[0], s[1]], {icon: ico(s[2] === 1 ? 'zavod' : 'sklad', 18), alt: s[2] === 1 ? 'Zavod' : 'Sklad'})
       .bindPopup(`<div class="pop"><h4>${s[2] === 1 ? 'Zavod (ishlab chiqarish)' : 'Sklad / logistika'} · ${esc(s[4])}</h4>${s[3] < 0 ? "Bu joy hali skanerlanmagan" : `Suratda oldida: ~${s[3]} fura`}</div>`))),
   };
   const defs = [['lots', 'Fura joylari', D.lots.length, '#1E40AF', true, 'dot'], ['road', "Yo'ldagi furalar", D.road.length, '#2563EB', true, 'dot'],
@@ -236,7 +239,9 @@ fetch('data.json').then(r => r.json()).then(D => {
   const tb = document.getElementById('toolbar');
   defs.forEach(([k, label, n, c, on, shape]) => {
     const b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.setAttribute('aria-pressed', on);
-    b.innerHTML = `<span class="${shape}" style="background:${c}"></span>${label} <small>${fmt(n)}</small>`;
+    b.innerHTML = (k === 'lots' ? `<img src="${TW(ICON.bojxona)}" alt="" width="18" height="18"><img src="${TW(ICON.tk)}" alt="" width="18" height="18">`
+      : k === 'sites' ? `<img src="${TW(ICON.zavod)}" alt="" width="18" height="18"><img src="${TW(ICON.sklad)}" alt="" width="18" height="18">`
+      : `<span class="${shape}" style="background:${c}"></span>`) + `${label} <small>${fmt(n)}</small>`;
     b.onclick = () => { const v = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', v); v ? layers[k].addTo(map) : map.removeLayer(layers[k]); };
     if (on) layers[k].addTo(map); tb.appendChild(b);
   });
